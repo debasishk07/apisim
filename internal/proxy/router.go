@@ -9,6 +9,7 @@ import (
 	"net/url"
 
 	"apisim/internal/config"
+	"apisim/internal/inject"
 	"apisim/internal/match"
 )
 
@@ -17,19 +18,19 @@ type Router struct {
 	scenario     *config.Scenario
 	defaultProxy *httputil.ReverseProxy
 	routes       []*routeEntry
+	globalCtr    *inject.CounterRef
 }
 
 // routeEntry binds a matcher to its proxy behavior.
 type routeEntry struct {
-	matcher  *match.Matcher
-	mode     string
-	reverse  *httputil.ReverseProxy
-	upstream *url.URL
+	matcher *match.Matcher
+	mode    string
+	handler http.Handler
 }
 
 // New builds a Router from a validated scenario.
 func New(scenario *config.Scenario) (*Router, error) {
-	r := &Router{scenario: scenario}
+	r := &Router{scenario: scenario, globalCtr: inject.NewCounterRef()}
 	if scenario.Defaults.Upstream != "" {
 		u, err := url.Parse(scenario.Defaults.Upstream)
 		if err != nil {
@@ -39,7 +40,7 @@ func New(scenario *config.Scenario) (*Router, error) {
 	}
 
 	for _, rt := range scenario.Routes {
-		entry, err := newRouteEntry(rt, scenario.Defaults)
+		entry, err := newRouteEntry(rt, scenario.Defaults, scenario.Seed, r.globalCtr)
 		if err != nil {
 			return nil, fmt.Errorf("route %q: %w", rt.Name, err)
 		}
@@ -48,7 +49,7 @@ func New(scenario *config.Scenario) (*Router, error) {
 	return r, nil
 }
 
-func newRouteEntry(rt config.Route, defaults config.Defaults) (*routeEntry, error) {
+func newRouteEntry(rt config.Route, defaults config.Defaults, seed int64, global *inject.CounterRef) (*routeEntry, error) {
 	m := match.New(rt.Match.Method, rt.Match.Path, rt.Match.Headers, rt.Match.Query, rt.Match.BodyJSON)
 	entry := &routeEntry{matcher: m, mode: rt.Mode}
 
@@ -61,8 +62,17 @@ func newRouteEntry(rt config.Route, defaults config.Defaults) (*routeEntry, erro
 		if err != nil {
 			return nil, fmt.Errorf("upstream %q: %w", upstream, err)
 		}
-		entry.upstream = u
-		entry.reverse = newReverseProxy(u)
+		base := newReverseProxy(u)
+
+		injects, err := inject.BuildInjectors(rt.Failures, seed)
+		if err != nil {
+			return nil, err
+		}
+		entry.handler = inject.NewPipeline(base, rt.Name, injects, seed, global, nil)
+	} else {
+		entry.handler = http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+			writeJSONError(w, http.StatusNotImplemented, "mode_not_implemented", fmt.Sprintf("route %q mode %q not yet implemented", m.Path, rt.Mode))
+		})
 	}
 	return entry, nil
 }
@@ -99,11 +109,7 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if best.mode == "proxy" && best.reverse != nil {
-		best.reverse.ServeHTTP(w, req)
-		return
-	}
-	writeJSONError(w, http.StatusNotImplemented, "mode_not_implemented", fmt.Sprintf("route %q mode %q not yet implemented", best.matcher.Path, best.mode))
+	best.handler.ServeHTTP(w, req)
 }
 
 // newReverseProxy builds a reverse proxy that forwards correctly.
@@ -167,5 +173,4 @@ func writeJSONError(w http.ResponseWriter, status int, code, msg string) {
 	w.WriteHeader(status)
 	body := fmt.Sprintf(`{"error":{"code":%q,"message":%q}}`, code, msg)
 	_, _ = io.WriteString(w, body)
-
 }
