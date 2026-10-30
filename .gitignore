@@ -1,0 +1,19 @@
+# Binaries
+/apisim
+*.exe
+
+# Go
+*.exe
+/test/
+/vendor/
+.idea/
+.vscode/
+*.swp
+
+# macOS
+.DS_Store
+
+# local db / recordings
+*.db
+*.sqlite
+recordings/
