@@ -10,11 +10,13 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 	"time"
 
 	"apisim/internal/config"
 	"apisim/internal/proxy"
+	"apisim/internal/store"
 	"github.com/spf13/cobra"
 )
 
@@ -39,15 +41,15 @@ func rootCmd() *cobra.Command {
 		Short: "apisim — chaos testing for third-party APIs",
 		Long: `apisim sits between your app and external APIs (Stripe, Twilio,
 OpenAI, etc.) and injects realistic failures so developers can verify their
-app handles outages, slowness, bad data, and webhook problems.
+app handles outages, slowness, bad data, and webhook problems.`,
 
-Use 'apisim start <scenario.yaml>' to run the proxy/mock server.`,
 		Version: versionString(),
 	}
 
 	cmd.AddCommand(versionCmd())
 	cmd.AddCommand(startCmd())
 	cmd.AddCommand(validateCmd())
+	cmd.AddCommand(logsCmd())
 
 	return cmd
 }
@@ -190,6 +192,60 @@ func validateCmd() *cobra.Command {
 			return nil
 		},
 	}
+}
+
+// logsCmd runs the apisim logs command.
+func logsCmd() *cobra.Command {
+	var (
+		follow bool
+		route  string
+		failed bool
+		dbPath string
+	)
+	cmd := &cobra.Command{
+		Use:   "logs [--follow] [--route X] [--failed]",
+		Short: "Query the request log",
+		Args:  cobra.ExactArgs(0),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return runLogs(follow, route, failed, dbPath)
+		},
+	}
+	cmd.Flags().BoolVar(&follow, "follow", false, "follow log output")
+	cmd.Flags().StringVar(&route, "route", "", "filter by route name")
+	cmd.Flags().BoolVar(&failed, "failed", false, "show only failed requests")
+	cmd.Flags().StringVar(&dbPath, "db", "", "path to SQLite database")
+	return cmd
+}
+
+func runLogs(follow bool, routeFilter string, failedFilter bool, dbPath string) error {
+	db, err := store.OpenStore(dbPath)
+	if err != nil {
+		return fmt.Errorf("open store: %w", err)
+	}
+	defer store.Close(db)
+
+	entries, err := store.QueryLogs(db, map[string]string{
+		"route": routeFilter,
+		"failed": strconv.FormatBool(failedFilter),
+	})
+	if err != nil {
+		return fmt.Errorf("query logs: %w", err)
+	}
+
+	for _, e := range entries {
+		if failedFilter && e.Status >= 400 {
+			fmt.Printf("[%s] %s %s -> %d error=%s\n", e.Timestamp, e.Method, e.Path, e.Status, e.Error)
+		} else if !failedFilter {
+			fmt.Printf("[%s] %s %s -> %d\n", e.Timestamp, e.Method, e.Path, e.Status)
+		}
+	}
+
+	if follow {
+		fmt.Println("--- Following (press Ctrl+C to stop) ---")
+		// In a real implementation, this would tail the log
+	}
+
+	return nil
 }
 
 // loggingMiddleware wraps the handler with structured request logging.

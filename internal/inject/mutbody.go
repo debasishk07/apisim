@@ -145,7 +145,7 @@ func navigateToParent(doc interface{}, segs []string) (interface{}, interface{},
 		}
 		return nil, nil, false
 	}
-	var cur interface{} = doc
+	cur := doc
 	for _, seg := range segs[:len(segs)-1] {
 		switch c := cur.(type) {
 		case map[string]interface{}:
