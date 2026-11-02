@@ -6,11 +6,13 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
 	"strconv"
+	"strings"
 	"syscall"
 	"time"
 
@@ -145,7 +147,17 @@ func runStart(scenarioPath string, cfg startConfig) error {
 		listen = ":8080"
 	}
 
-	router, err := proxy.New(scen)
+	var db *sql.DB
+	if cfg.DBPath != "" {
+		var err error
+		db, err = store.OpenStore(cfg.DBPath)
+		if err != nil {
+			return fmt.Errorf("open store: %w", err)
+		}
+		defer store.Close(db)
+	}
+
+	router, err := proxy.New(scen, db)
 	if err != nil {
 		return fmt.Errorf("build proxy: %w", err)
 	}
@@ -154,6 +166,35 @@ func runStart(scenarioPath string, cfg startConfig) error {
 		Addr:    listen,
 		Handler: loggingMiddleware(router),
 	}
+
+	// Dashboard routes.
+	dashboardHandler := apiHandler(router, db)
+
+	// Register /__apisim/ paths for dashboard
+	srv.Handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		path := r.URL.Path
+		if path == "/dashboard.css" {
+			data, err := os.ReadFile("internal/dashboard/dashboard.css")
+			if err != nil {
+				http.Error(w, "dashboard css not found", http.StatusInternalServerError)
+				return
+			}
+			w.Header().Set("Content-Type", "text/css")
+			w.Write(data)
+		} else if path == "/dashboard.js" {
+			data, err := os.ReadFile("internal/dashboard/dashboard.js")
+			if err != nil {
+				http.Error(w, "dashboard js not found", http.StatusInternalServerError)
+				return
+			}
+			w.Header().Set("Content-Type", "application/javascript")
+			w.Write(data)
+		} else if strings.HasPrefix(path, "/__apisim/") {
+			dashboardHandler.ServeHTTP(w, r)
+		} else {
+			loggingMiddleware(router).ServeHTTP(w, r)
+		}
+	})
 
 	// Graceful shutdown.
 	stop := make(chan os.Signal, 1)
@@ -277,4 +318,50 @@ func (w *responseWriter) Write(b []byte) (int, error) {
 		w.WriteHeader(http.StatusOK)
 	}
 	return w.ResponseWriter.Write(b)
+}
+
+// dashboardAPI serves the dashboard HTML template from internal/dashboard/index.html
+func dashboardAPI(w http.ResponseWriter, r *http.Request, router *proxy.Router, sqlDB *sql.DB) {
+	data, err := os.ReadFile("internal/dashboard/index.html")
+	if err != nil {
+		http.Error(w, "dashboard template not found", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Write(data)
+}
+
+// apiHandler routes /__apisim/ paths to the dashboard and everything else
+// to the proxy router.
+func apiHandler(r *proxy.Router, sqlDB *sql.DB) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		path := req.URL.Path
+		if path == "/dashboard.css" {
+			data, err := os.ReadFile("internal/dashboard/dashboard.css")
+			if err != nil {
+				http.Error(w, "dashboard css not found", http.StatusInternalServerError)
+				return
+			}
+			w.Header().Set("Content-Type", "text/css")
+			w.Write(data)
+		} else if path == "/dashboard.js" {
+			data, err := os.ReadFile("internal/dashboard/dashboard.js")
+			if err != nil {
+				http.Error(w, "dashboard js not found", http.StatusInternalServerError)
+				return
+			}
+			w.Header().Set("Content-Type", "application/javascript")
+			w.Write(data)
+		} else if strings.HasPrefix(path, "/__apisim/") {
+			handleAPI(w, req, r, sqlDB)
+		} else {
+			r.ServeHTTP(w, req)
+		}
+	})
+}
+
+// handleAPI dispatches to the dashboard page handler.
+func handleAPI(w http.ResponseWriter, r *http.Request, router *proxy.Router, sqlDB *sql.DB) {
+	// All /__apisim/ paths serve the dashboard HTML
+	dashboardAPI(w, r, router, sqlDB)
 }

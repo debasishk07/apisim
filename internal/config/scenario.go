@@ -16,6 +16,7 @@ type Scenario struct {
 	Seed     int64    `yaml:"seed"`
 	Defaults Defaults `yaml:"defaults"`
 	Routes   []Route  `yaml:"routes"`
+	Webhooks Webhooks `yaml:"webhooks"`
 }
 
 // Defaults apply to all routes unless overridden.
@@ -156,7 +157,7 @@ func (m MultiError) Unwrap() []error { return []error(m) }
 // Known top-level and route fields, used for strict validation.
 var topLevelFields = map[string]bool{
 	"version": true, "name": true, "listen": true, "seed": true,
-	"defaults": true, "routes": true,
+	"defaults": true, "routes": true, "webhooks": true,
 }
 
 var defaultsFields = map[string]bool{
@@ -179,20 +180,34 @@ var responseFields = map[string]bool{
 }
 
 var failureFields = map[string]bool{
-	"type": true, "when": true,
-	"delay_ms": true, "jitter_ms": true,
-	"status": true, "body": true,
-	"operations": true,
-	"limit":      true, "window_s": true,
-	"after_requests":   true,
+	"type":        true,
+	"when":        true,
+	"delay_ms":    true,
+	"jitter_ms":   true,
+	"status":      true,
+	"body":        true,
+	"operations":  true,
+	"limit":       true,
+	"window_s":    true,
+	"after_requests": true,
 	"bytes_per_second": true,
+	"error":       true,
+	"headers":     true,
 }
 
 var latencyFields = map[string]bool{"delay_ms": true, "jitter_ms": true}
-var errorFields = map[string]bool{"status": true, "body": true, "headers": true}
+var errorFields = map[string]bool{"status": true, "body": true, "headers": true, "error": true}
 
 // ValidModes are the supported route modes.
-var ValidModes = map[string]bool{"proxy": true, "mock": true, "replay": true}
+var ValidModes = map[string]bool{"proxy": true, "mock": true, "replay": true, "record": true}
+
+// Webhooks configures webhook simulation.
+type Webhooks struct {
+	TargetURL    string   `yaml:"target_url"`
+	PayloadTemplate string `yaml:"payload_template"`
+	Events       []string `yaml:"events"`
+	HMACSecret   string   `yaml:"hmac_secret"`
+}
 
 // ValidInjectorTypes are the supported failure injector types.
 var ValidInjectorTypes = map[string]bool{

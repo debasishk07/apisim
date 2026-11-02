@@ -31,7 +31,11 @@ func buildOne(f config.Failure, rng *rand.Rand) (Injector, error) {
 	case "latency":
 		return NewLatency(f.Latency.DelayMs, f.Latency.JitterMs, f.Trigger, rng)
 	case "error":
-		return NewError(f.Error.Status, f.Error.Body, f.Error.Headers, f.Trigger, rng)
+		status := f.Error.Status
+		if status == 0 {
+			status = 503
+		}
+		return NewError(status, f.Error.Body, f.Error.Headers, f.Trigger, rng)
 	case "timeout":
 		return NewTimeout(f.Trigger, rng)
 	case "drop_connection":

@@ -1,0 +1,16 @@
+version: 1
+name: openai-flaky-api
+listen: ":8080"
+defaults:
+  upstream: https://api.openai.com
+routes:
+  - name: chat-completion
+    match:
+      method: POST
+      path: /v1/chat/completions
+    mode: proxy
+    upstream: https://api.openai.com
+    failures:
+      - type: error
+        status: 503
+        body: '{"error":"service unavailable"}'

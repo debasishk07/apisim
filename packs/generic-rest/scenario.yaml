@@ -1,0 +1,16 @@
+version: 1
+name: generic-flaky-api
+listen: ":8080"
+defaults:
+  upstream: https://httpbin.org
+routes:
+  - name: test-endpoint
+    match:
+      method: GET
+      path: /get
+    mode: proxy
+    upstream: https://httpbin.org
+    failures:
+      - type: error
+        status: 500
+        body: '{"error":"internal server error"}'

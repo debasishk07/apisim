@@ -55,7 +55,34 @@ func Load(data []byte) (*Scenario, error) {
 		}
 
 		switch key {
-		case "version":
+		case "webhooks":
+		// Basic webhooks config validation - store raw values
+		scen.Webhooks = Webhooks{}
+		if valNode.Kind == yaml.MappingNode {
+			for i := 0; i < len(valNode.Content); i += 2 {
+				k := valNode.Content[i].Value
+				v := valNode.Content[i+1]
+				switch k {
+				case "target_url":
+					scen.Webhooks.TargetURL = unquote(v.Value)
+				case "payload_template":
+					scen.Webhooks.PayloadTemplate = unquote(v.Value)
+				case "events":
+					// events is a sequence, basic validation
+					if v.Kind == yaml.SequenceNode {
+						for _, item := range v.Content {
+							if item.Kind == yaml.ScalarNode {
+								scen.Webhooks.Events = append(scen.Webhooks.Events, unquote(item.Value))
+							}
+						}
+					}
+				case "hmac_secret":
+					scen.Webhooks.HMACSecret = unquote(v.Value)
+				}
+			}
+		}
+		continue
+	case "version":
 			v, err := parseInt(valNode, keyNode)
 			if err != nil {
 				errs = append(errs, err)
@@ -411,11 +438,17 @@ func parseFailure(node *yaml.Node, ridx, fidx int) (Failure, MultiError) {
 		for i := 0; i < len(node.Content); i += 2 {
 			k := node.Content[i].Value
 			v := node.Content[i+1]
+			// Skip type and when fields (already handled above).
+			if k == "type" || k == "when" {
+				continue
+			}
 			if !errorFields[k] {
 				errs = append(errs, &ValidationError{Path: path, Line: node.Content[i].Line, Column: node.Content[i].Column, Msg: fmt.Sprintf("unknown field %q for error", k)})
 				continue
 			}
 			switch k {
+		case "error":
+				errCfg.Body = unquote(v.Value)
 			case "status":
 				n, err := parseInt(v, node.Content[i])
 				if err != nil {

@@ -1,0 +1,190 @@
+/* Dashboard CSS for apisim */
+:root {
+  --primary: #3b82f6;
+  --primary-dark: #2563eb;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --gray-100: #f9fafb;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Nav */
+nav {
+  background: white;
+  padding: 1rem 2rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.nav-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo svg {
+  width: 32px;
+  height: 32px;
+}
+
+@media (max-width: 640px) {
+  .nav-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+/* Home screen */
+.home-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow);
+}
+
+@media (prefers-dark-mode) {
+  .home-card {
+    background: #1f2937;
+  }
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #1f2937;
+}
+
+@media (prefers-dark-mode) {
+  .section-title {
+    color: #f9fafb;
+  }
+}
+
+.list-disc {
+  list-style-type: disc;
+}
+
+.list-disc li {
+  margin-bottom: 0.25rem;
+}
+
+.buttons .w-full {
+  margin-bottom: 0.5rem;
+}
+
+.buttons .w-full:last-child {
+  margin-bottom: 0;
+}
+
+/* Traffic screen */
+.table-responsive {
+  overflow-x: auto;
+}
+
+@media (max-width: 640px) {
+  .table-responsive {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .p-6 {
+    padding: 1rem;
+  }
+}
+
+/* Chaos controls */
+.chaos-card {
+  transition: background-color 0.2s;
+}
+
+.chaos-card:hover {
+  background: #f8fafc;
+}
+
+@media (prefers-dark-mode) {
+  .chaos-card:hover {
+    background: #1e293b;
+  }
+}
+
+/* Report screen */
+.report-select {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .report-select {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .report-select .rounded-border {
+    width: 100%;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

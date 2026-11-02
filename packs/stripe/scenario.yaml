@@ -1,0 +1,21 @@
+version: 1
+name: stripe-card-declined
+listen: ":8080"
+defaults:
+  upstream: https://api.stripe.com
+routes:
+  - name: charge
+    match:
+      method: POST
+      path: /v1/charges
+    mode: proxy
+    upstream: https://api.stripe.com
+    failures:
+      - type: error
+        when:
+          probability: 1.0
+        error:
+          status: 402
+          body: '{"error":{"type":"card_declined","message":"Your card was declined."}}'
+          headers:
+            Retry-After: "5"

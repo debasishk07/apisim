@@ -91,6 +91,24 @@ apisim version                      Print the apisim version
 | `--fail-fast` | `false` | Exit on first config error |
 | `--ci` | `false` | Machine-readable output; nonzero exit on config error |
 
+## Dashboard (Phase 6)
+
+Run apisim with the dashboard flag:
+
+```bash
+apisim start scenario.yaml --dashboard
+```
+
+The dashboard is embedded at `http://localhost:8080/__apisim/`. It provides 5 screens:
+
+- **Home** - Quick start with packs or blank scenario
+- **Live Traffic** - Real-time request log with filtering, pause/resume, kill switch
+- **Chaos Controls** - Sliders for latency, errors, rate limiting, timeouts
+- **Report** - Generate resilience reports (Text/JSON/HTML format)
+- **Recordings** - View recorded interactions
+
+**Note:** The dashboard CSS and JS are served from `/dashboard.css` and `/dashboard.js` routes.
+
 ## Scenario File Format
 
 See the [scenario reference](docs/scenario.schema.json) for every field and failure type with examples.

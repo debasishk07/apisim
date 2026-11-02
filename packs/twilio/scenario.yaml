@@ -1,0 +1,16 @@
+version: 1
+name: twilio-sms-timeout
+listen: ":8080"
+defaults:
+  upstream: https://api.twilio.com
+routes:
+  - name: send-sms
+    match:
+      method: POST
+      path: /v1/messages
+    mode: proxy
+    upstream: https://api.twilio.com
+    failures:
+      - type: error
+        status: 503
+        body: '{"error":"service unavailable"}'

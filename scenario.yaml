@@ -1,0 +1,12 @@
+version: 1
+name: test-webhook
+listen: ":8080"
+routes:
+  - name: health-check
+    match:
+      method: GET
+      path: "/health"
+    mode: mock
+    response:
+      status: 200
+      body: "OK"

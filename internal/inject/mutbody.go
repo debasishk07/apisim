@@ -298,8 +298,5 @@ func jsonChangeType(doc interface{}, path, to string) bool {
 	default:
 		converted = val
 	}
-	if !setValue(parent, key, converted) {
-		return false
-	}
-	return true
+	return setValue(parent, key, converted)
 }

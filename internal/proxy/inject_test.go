@@ -211,13 +211,13 @@ func TestInjectDropConnectionIntegration(t *testing.T) {
 	srv := httptest.NewServer(router)
 	defer srv.Close()
 
-	client := &http.Transport{}
-	tr := &http.Client{Transport: client}
+	client := &http.Client{}
 	req, _ := http.NewRequest("GET", srv.URL+"/v1/charge", nil)
-	_, err := client.Do(req)
+	_, err = client.Do(req)
 	require.Error(t, err)
-
 }
+
+func TestInjectTimeoutIntegration(t *testing.T) {
 	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// never respond
 		select {}
