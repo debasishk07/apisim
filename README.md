@@ -56,14 +56,13 @@ go install github.com/apisim/apisim@latest
 
 ### From binary
 
-Download the pre-built binary from the [releases page](https://github.com/apisim/apisim/releases).
+Download the pre-built binary from the [releases page](https://github.com/debasishk07/apisim/releases).
 
 ### From source
 
 ```bash
-git clone https://github.com/apisim/apisim.git
+git clone https://github.com/debasishk07/apisim.git
 cd apisim
-go build -o apisim ./cmd/apisim
 ```
 
 ## CLI Commands
