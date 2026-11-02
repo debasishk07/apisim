@@ -9,27 +9,25 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="/dashboard.css">
 </head>
-<body class="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans antialiased">
+<body class="min-h-screen antialiased">
+
   <!-- Top navigation -->
   <nav class="bg-white shadow-sm dark:bg-gray-800 sticky top-0 z-10">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div class="container flex items-center justify-between px-4 py-3">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-primary text-white flex items-center justify-center">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+          <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 01-4 4v7h4V7zm0 0a4 4 0 01-4-4V3h4v7zm0 0a4 4 0 01-4 4v7H4a4 4 0 01-4-4v-7h4zM7 13a4 4 0 01-4-4v-7h4v7zm0 0a4 4 0 01-4-4h-7a4 4 0 014-4v7h4v7zm0 0a4 4 0 014 4h7a4 4 0 01-4 4v7H7vz">
             </path>
           </svg>
         </div>
         <div>
-          <h1 class="text-lg font-semibold">apisim</h1>
-          <p class="text-sm text-gray-500">Chaos testing for third-party APIs</p>
+          <h1 class="text-lg font-semibold tracking-tight">apisim</h1>
+          <p class="text-sm text-muted">Chaos testing for third-party APIs</p>
         </div>
       </div>
       
       <div class="flex items-center gap-2">
-        <button id="dashboard-toggle" class="hidden sm:block rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-primary/90">
-          Dashboard
-        </button>
         <button id="ui-button" class="sm:hidden rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-primary/90" onclick="window.location.href='/'">
           UI
         </button>
@@ -37,23 +35,23 @@
     </div>
   </nav>
 
-  <main class="max-w-7xl mx-auto p-4">
+  <main class="container px-4 py-6 max-w-7xl mx-auto">
     <!-- Home screen -->
-    <div id="home-screen" class="min-h-screen flex flex-col items-center justify-center pt-8">
-      <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-2xl w-full max-w-md text-center">
-        <div class="w-16 h-16 rounded-lg bg-primary/10 flex items-center justify-center mb-6">
-          <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div id="home-screen" class="min-h-screen flex flex-col items-center justify-center pt-8 fade-in-up">
+      <div class="home-card">
+        <div class="pulse-svg">
+          <svg class="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2H5a2 2 0 00-2 2zM9 18a2 2 0 002 2h4a2 2 0 002-2H9zm2-8V5a2 2 0 012-2h2a2 2 0 012 2v3.09m7.91-1.09a2 2 0 010 3.92L15 10l4 4v3a2 2 0 01-2 2H5a2 2 0 01-2-2v-3z">
             </path>
           </svg>
         </div>
-        <h2 class="text-2xl font-bold mb-2">Welcome to apisim</h2>
-        <p class="text-gray-600 dark:text-gray-300 mb-6">Chaos testing proxy for third-party APIs</p>
+        <h2 class="section-title mb-3">Welcome to apisim</h2>
+        <p class="subtitle mb-6">Inject realistic failures into your API workflows to test resilience and error handling.</p>
         
-        <div class="grid grid-cols-2 gap-4 mb-8">
+        <div class="grid-2 mb-8">
           <div>
             <h3 class="font-medium mb-2">Quick start</h3>
-            <ol class="list-decimal pl-5 space-y-1">
+            <ol class="space-y-2 pl-3 line-clamp-4">
               <li>Select a pack below or start blank</li>
               <li>Enter your upstream URL</li>
               <li>Click "Start testing"</li>
@@ -62,7 +60,7 @@
           </div>
           <div>
             <h3 class="font-medium mb-2">Packs</h3>
-            <ul class="list-disc pl-5 space-y-1">
+            <ul class="space-y-1 pl-3 line-clamp-4">
               <li>Stripe: Card declined, 5xx errors, webhook retry</li>
               <li>Twilio: SMS timeout, rate limit</li>
               <li>OpenAI: 429s, slow streaming, auth expiry</li>
@@ -71,10 +69,10 @@
           </div>
         </div>
         
-        <div class="border rounded-lg p-6 max-w-md w-full">
+        <div class="card pt-6">
           <h3 class="font-medium mb-3">Or start blank</h3>
-          <p class="text-sm text-gray-500 mb-4">Create a custom scenario from scratch</p>
-          <button id="start-blank" class="w-full rounded-md bg-primary py-2.5 text-sm font-medium text-white hover:bg-primary/90 transition-colors">
+          <p class="text-muted mb-4">Create a custom scenario from scratch</p>
+          <button id="start-blank" class="btn btn-primary w-full justify-center py-2.5 text-sm font-medium">
             Start blank scenario
           </button>
         </div>
@@ -82,56 +80,50 @@
     </div>
 
     <!-- Live traffic screen -->
-    <div id="traffic-screen" class="hidden min-h-screen flex flex-col">
-      <nav class="bg-white shadow-sm dark:bg-gray-800 border-b">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div id="traffic-screen" class="hidden min-h-screen flex flex-col fade-in-up" style="animation-delay: 0.1s;">
+      <nav class="bg-white shadow-sm dark:bg-gray-800 border-b px-4 py-3">
+        <div class="container flex items-center justify-between">
           <div class="flex items-center gap-3">
             <span class="text-xl font-semibold">Live Traffic</span>
-            <button id="back-home" class="rounded-md bg-gray-100 px-3 py-1.5 text-sm text-gray-500 hover:bg-gray-200 transition-colors">
-              Home
-            </button>
+            <button id="back-home" class="btn-nav btn-nav-secondary">Home</button>
           </div>
           <div class="flex items-center gap-2">
-            <button id="pause-btn" class="rounded-md bg-yellow-100 px-3 py-1.5 text-sm font-medium text-yellow-800 transition-colors">
+            <button id="pause-btn" class="btn btn-secondary py-1.5 text-sm font-medium">
               Pause
             </button>
-            <span id="filter-status" class="text-sm text-gray-500">All</span>
-            <input id="filter-q" type="text" placeholder="Search..." class="rounded-md border px-3 py-1 text-sm flex-1">
+            <span id="filter-status" class="text-muted">All</span>
+            <input id="filter-q" type="text" placeholder="Search..." class="input rounded border py-1 px-3 text-sm flex-1">
           </div>
         </div>
       </nav>
-      <div class="flex-1 overflow-x-hidden overflow-y-auto">
-        <div class="p-4">
-          <div class="space-y-4" id="events-container">
-            <p class="text-center text-gray-500 py-8">Connecting to live events...</p>
-          </div>
+      <div class="flex-1 overflow-y-auto px-4 pb-6">
+        <div class="space-y-4">
+          <p class="text-center text-muted py-8">Connecting to live events...</p>
         </div>
       </div>
     </div>
 
     <!-- Chaos controls screen -->
-    <div id="chaos-screen" class="hidden min-h-screen flex flex-col">
-      <nav class="bg-white shadow-sm dark:bg-gray-800 border-b">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div id="chaos-screen" class="hidden min-h-screen flex flex-col fade-in-up" style="animation-delay: 0.2s;">
+      <nav class="bg-white shadow-sm dark:bg-gray-800 border-b px-4 py-3">
+        <div class="container flex items-center justify-between">
           <div class="flex items-center gap-3">
             <span class="text-xl font-semibold">Chaos Controls</span>
-            <button id="back-to-traffic" class="rounded-md bg-gray-100 px-3 py-1.5 text-sm text-gray-500 hover:bg-gray-200 transition-colors">
-              Traffic
-            </button>
+            <button id="back-to-traffic" class="btn-nav btn-nav-secondary">Traffic</button>
           </div>
           <div>
-            <button id="kill-switch" class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors">
+            <button id="kill-switch" class="btn btn-error py-2 font-medium">
               Kill Switch: ON
             </button>
           </div>
         </div>
       </nav>
-      <div class="flex-1 p-6">
-        <div class="grid grid-cols-2 gap-6 mb-8">
+      <div class="p-6">
+        <div class="grid-2 mb-8">
           <!-- Latency control -->
-          <div class="rounded-lg border p-6">
+          <div class="card">
             <h3 class="font-medium mb-2">Latency</h3>
-            <p class="text-sm text-gray-500 mb-4">Adds a random delay to simulate a slow network</p>
+            <p class="text-muted text-sm mb-4">Adds a random delay to simulate a slow network</p>
             <div>
               <label class="block text-sm mb-1">Delay (ms)</label>
               <input type="range" id="latency-slider" min="0" max="5000" value="0" class="w-full accent-primary">
@@ -143,17 +135,17 @@
           </div>
           
           <!-- Error control -->
-          <div class="rounded-lg border p-6">
+          <div class="card">
             <h3 class="font-medium mb-2">Error</h3>
-            <p class="text-sm text-gray-500 mb-4">Returns an HTTP error some of the time</p>
+            <p class="text-muted text-sm mb-4">Returns an HTTP error some of the time</p>
             <div>
               <label class="block text-sm mb-1">Status code</label>
-              <select id="error-status" class="rounded-border border py-1 px-2 w-full">
+              <select id="error-status" class="rounded border py-1 px-2 w-full mb-3">
                 <option value="503">503</option>
                 <option value="500">500</option>
                 <option value="429">429</option>
               </select>
-              <label class="block text-sm mb-1 mt-2">Probability</label>
+              <label class="block text-sm mb-1">Probability</label>
               <input type="range" id="probability-slider" min="0" max="100" value="30" class="w-full accent-primary">
               <div class="flex justify-between text-xs mt-2">
                 <span>0%</span>
@@ -163,25 +155,25 @@
           </div>
         </div>
         
-        <div class="grid grid-cols-2 gap-6 mb-8">
+        <div class="grid-2 mb-8">
           <!-- Rate limit control -->
-          <div class="rounded-lg border p-6">
+          <div class="card">
             <h3 class="font-medium mb-2">Rate limit</h3>
-            <p class="text-sm text-gray-500 mb-4">Limits requests per time window</p>
+            <p class="text-muted text-sm mb-4">Limits requests per time window</p>
             <div>
               <label class="block text-sm mb-1">Requests per window</label>
-              <input type="number" id="rate-limit" min="1" value="10" class="rounded-border border w-full py-2 px-3 text-sm">
+              <input type="number" id="rate-limit" min="1" value="10" class="rounded border py-2 px-3 text-sm">
             </div>
             <div>
               <label class="block text-sm mb-1">Window (seconds)</label>
-              <input type="number" id="rate-window" min="1" value="60" class="rounded-border border w-full py-2 px-3 text-sm">
+              <input type="number" id="rate-window" min="1" value="60" class="rounded border py-2 px-3 text-sm">
             </div>
           </div>
           
           <!-- Timeout control -->
-          <div class="rounded-lg border p-6">
+          <div class="card">
             <h3 class="font-medium mb-2">Timeout</h3>
-            <p class="text-sm text-gray-500 mb-4">Never responds until client gives up</p>
+            <p class="text-muted text-sm mb-4">Never responds until client gives up</p>
             <div>
               <label class="block text-sm mb-1">Probability</label>
               <input type="range" id="timeout-slider" min="0" max="100" value="0" class="w-full accent-primary">
@@ -190,67 +182,59 @@
         </div>
         
         <div>
-          <button id="reset-btn" class="w-full rounded-md bg-gray-100 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors">
+          <button id="reset-btn" class="btn btn-secondary w-full py-2.5 text-sm font-medium mt-4">
             Reset to defaults
           </button>
-          <p class="text-center text-sm text-gray-500 mt-4">Seed: <span id="seed-display">0</span></p>
+          <p class="text-center text-muted mt-3">Seed: <span id="seed-display">0</span></p>
         </div>
       </div>
     </div>
 
     <!-- Report screen -->
-    <div id="report-screen" class="hidden min-h-screen flex flex-col">
-      <nav class="bg-white shadow-sm dark:bg-gray-800 border-b">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div id="report-screen" class="hidden min-h-screen flex flex-col fade-in-up" style="animation-delay: 0.3s;">
+      <nav class="bg-white shadow-sm dark:bg-gray-800 border-b px-4 py-3">
+        <div class="container flex items-center justify-between">
           <div class="flex items-center gap-3">
             <span class="text-xl font-semibold">Resilience Report</span>
-            <button id="back-to-traffic2" class="rounded-md bg-gray-100 px-3 py-1.5 text-sm text-gray-500 hover:bg-gray-200 transition-colors">
-              Traffic
-            </button>
+            <button id="back-to-traffic2" class="btn-nav btn-nav-secondary">Traffic</button>
           </div>
           <div class="flex items-center gap-2">
-            <select id="report-format" class="rounded-border border py-1.5 px-3 text-sm">
+            <select id="report-format" class="rounded border py-1.5 px-3 text-sm">
               <option value="text">Text</option>
               <option value="json">JSON</option>
               <option value="html">HTML</option>
             </select>
-            <button id="export-btn" class="rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-white transition-colors">
+            <button id="export-btn" class="btn btn-primary py-1.5 text-sm font-medium">
               Export
             </button>
           </div>
         </div>
       </nav>
-      <div class="flex-1 p-6">
-        <div id="report-content">
-          <p class="text-center text-gray-500 py-8">Select a format to generate report</p>
-        </div>
+      <div class="p-6">
+        <div id="report-content" class="text-center text-muted py-8">Select a format to generate report</div>
       </div>
     </div>
 
     <!-- Recordings screen -->
-    <div id="recordings-screen" class="hidden min-h-screen flex flex-col">
-      <nav class="bg-white shadow-sm dark:bg-gray-800 border-b">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div id="recordings-screen" class="hidden min-h-screen flex flex-col fade-in-up" style="animation-delay: 0.4s;">
+      <nav class="bg-white shadow-sm dark:bg-gray-800 border-b px-4 py-3">
+        <div class="container flex items-center justify-between">
           <div class="flex items-center gap-3">
             <span class="text-xl font-semibold">Recordings</span>
-            <button id="back-to-traffic3" class="rounded-md bg-gray-100 px-3 py-1.5 text-sm text-gray-500 hover:bg-gray-200 transition-colors">
-              Traffic
-            </button>
+            <button id="back-to-traffic3" class="btn-nav btn-nav-secondary">Traffic</button>
           </div>
         </div>
       </nav>
-      <div class="flex-1 overflow-x-hidden overflow-y-auto">
-        <div class="p-6">
-          <div class="border rounded-lg p-4 mb-6">
-            <h3 class="font-medium">No recordings yet</h3>
-            <p class="text-sm text-gray-500">Start testing to record interactions</p>
-            <button id="promote-btn" class="mt-3 rounded-md bg-primary px-4 py-2 text-sm font-medium text-white transition-colors">
-              Promote to mock route
-            </button>
-          </div>
-          <div id="recordings-list">
-            <!-- Recordings will be populated here -->
-          </div>
+      <div class="p-6">
+        <div class="border rounded-lg p-4 mb-6">
+          <h3 class="font-medium">No recordings yet</h3>
+          <p class="text-muted">Start testing to record interactions</p>
+          <button id="promote-btn" class="btn btn-primary mt-3 py-2 text-sm font-medium">
+            Promote to mock route
+          </button>
+        </div>
+        <div id="recordings-list">
+          <!-- Recordings will be populated here -->
         </div>
       </div>
     </div>

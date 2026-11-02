@@ -91,6 +91,34 @@ apisim version                      Print the apisim version
 | `--fail-fast` | `false` | Exit on first config error |
 | `--ci` | `false` | Machine-readable output; nonzero exit on config error |
 
+## Git Commands
+
+```bash
+# Clone the repository
+git clone https://github.com/debasishk07/apisim.git
+cd apisim
+
+# Install dependencies and build
+go install github.com/apisim/apisim@latest
+# Or build from source
+go build -o apisim ./cmd/apisim
+
+# Start apisim with a scenario
+apisim start scenario.yaml
+
+# Start apisim with dashboard (Phase 6)
+apisim start scenario.yaml --dashboard
+
+# Validate a scenario file
+apisim validate scenario.yaml
+
+# Generate a new starter scenario
+apisim init --template stripe
+
+# Check the version
+apisim version
+```
+
 ## Dashboard (Phase 6)
 
 Run apisim with the dashboard flag:
@@ -99,15 +127,23 @@ Run apisim with the dashboard flag:
 apisim start scenario.yaml --dashboard
 ```
 
-The dashboard is embedded at `http://localhost:8080/__apisim/`. It provides 5 screens:
+The dashboard is embedded at `http://localhost:8080/__apisim/`. It provides 5 beautifully designed screens with the Anthropic orange & baige theme:
 
-- **Home** - Quick start with packs or blank scenario
-- **Live Traffic** - Real-time request log with filtering, pause/resume, kill switch
-- **Chaos Controls** - Sliders for latency, errors, rate limiting, timeouts
-- **Report** - Generate resilience reports (Text/JSON/HTML format)
-- **Recordings** - View recorded interactions
+- **Home** - Quick start with curated packs or blank scenario. Features professional card layouts, pack descriptions, and a "Start blank" call-to-action.
+- **Live Traffic** - Real-time request log with filtering, search, pause/resume toggle, and kill switch for emergency stops.
+- **Chaos Controls** - Intuitive slider-based controls for latency (ms), error probability, status codes, rate limiting (req/second), and timeouts. All controls persist in real-time.
+- **Report** - Generate resilience reports in Text, JSON, or HTML format. Export button saves the report locally.
+- **Recordings** - View captured request/response interactions. Promote favorite recordings to mock routes for replay without the upstream.
 
-**Note:** The dashboard CSS and JS are served from `/dashboard.css` and `/dashboard.js` routes.
+**Design highlights:**
+- Anthropic-inspired orange & baige color palette with high contrast
+- Card-based layouts with subtle shadows and rounded corners
+- Focus-visible states for keyboard navigation
+- Reduced-motion support for accessibility
+- Tailwind CSS 3.x with custom theme variables
+- All assets served from `/dashboard.css` and `/dashboard.js` routes
+
+**Note:** The dashboard CSS and JS are served from `/dashboard.css` and `/dashboard.js` routes, registered alongside the `/__apisim/` proxy paths.
 
 ## Scenario File Format
 
