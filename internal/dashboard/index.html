@@ -9,49 +9,47 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="/dashboard.css">
 </head>
-<body class="min-h-screen antialiased">
+<body>
+  <div id="__apisim-root">
+    <!-- Background overlay -->
+    <div class="fixed inset-0 pointer-events-none opacity-50">
+      <div class="absolute inset-0 bg-pattern"></div>
+    </div>
 
-  <!-- Top navigation -->
-  <nav class="bg-white shadow-sm dark:bg-gray-800 sticky top-0 z-10">
-    <div class="container flex items-center justify-between px-4 py-3">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-          <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <!-- Top navigation -->
+    <nav class="app-nav">
+      <div class="nav-container">
+        <div class="logo">
+          <svg class="logo-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 01-4 4v7h4V7zm0 0a4 4 0 01-4-4V3h4v7zm0 0a4 4 0 01-4 4v7H4a4 4 0 01-4-4v-7h4zM7 13a4 4 0 01-4-4v-7h4v7zm0 0a4 4 0 01-4-4h-7a4 4 0 014-4v7h4v7zm0 0a4 4 0 014 4h7a4 4 0 01-4 4v7H7vz">
             </path>
           </svg>
+          <span class="logo-text">apisim</span>
         </div>
-        <div>
-          <h1 class="text-lg font-semibold tracking-tight">apisim</h1>
-          <p class="text-sm text-muted">Chaos testing for third-party APIs</p>
+        <div class="nav-actions">
+          <button id="ui-button" class="btn-nav btn-nav-secondary">UI</button>
         </div>
       </div>
-      
-      <div class="flex items-center gap-2">
-        <button id="ui-button" class="sm:hidden rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-primary/90" onclick="window.location.href='/'">
-          UI
-        </button>
-      </div>
-    </div>
-  </nav>
+    </nav>
 
-  <main class="container px-4 py-6 max-w-7xl mx-auto">
-    <!-- Home screen -->
-    <div id="home-screen" class="min-h-screen flex flex-col items-center justify-center pt-8 fade-in-up">
-      <div class="home-card">
-        <div class="pulse-svg">
-          <svg class="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2H5a2 2 0 00-2 2zM9 18a2 2 0 002 2h4a2 2 0 002-2H9zm2-8V5a2 2 0 012-2h2a2 2 0 012 2v3.09m7.91-1.09a2 2 0 010 3.92L15 10l4 4v3a2 2 0 01-2 2H5a2 2 0 01-2-2v-3z">
-            </path>
-          </svg>
+    <main class="main-content">
+      <!-- Home screen -->
+      <section id="home-screen" class="hero-section fade-in-up">
+        <div class="section-header">
+          <h1>Welcome to apisim</h1>
+          <p>Inject realistic failures into your API workflows to test resilience and error handling.</p>
         </div>
-        <h2 class="section-title mb-3">Welcome to apisim</h2>
-        <p class="subtitle mb-6">Inject realistic failures into your API workflows to test resilience and error handling.</p>
-        
-        <div class="grid-2 mb-8">
+
+        <div class="grid-2">
           <div>
-            <h3 class="font-medium mb-2">Quick start</h3>
-            <ol class="space-y-2 pl-3 line-clamp-4">
+            <h3 class="card-header">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2H5a2 2 0 00-2 2zM9 18a2 2 0 002 2h4a2 2 0 002-2H9zm2-8V5a2 2 0 012-2h2a2 2 0 012 2v3.09m7.91-1.09a2 2 0 010 3.92L15 10l4 4v3a2 2 0 01-2 2H5a2 2 0 01-2-2v-3z">
+                </path>
+              </svg>
+              Quick start
+            </h3>
+            <ol class="space-y-3 pl-4 line-clamp-4 max-w-md mx-auto">
               <li>Select a pack below or start blank</li>
               <li>Enter your upstream URL</li>
               <li>Click "Start testing"</li>
@@ -59,8 +57,14 @@
             </ol>
           </div>
           <div>
-            <h3 class="font-medium mb-2">Packs</h3>
-            <ul class="space-y-1 pl-3 line-clamp-4">
+            <h3 class="card-header">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0-12h12m0 0l-4-4m4 4l-4 4m-5-7h10a2 2 0 012 2v1a22 22 0 01-2 2h-1a2 2 0 01-2-2v-1M8 7a2 2 0 00-2 2v1M8 7a2 2 0 002 2v1m0-3a2 2 0 012-2h1m-2 0a2 2 0 01-2-2H8m2 0a2 2 0 012 2v1M8 7a2 2 0 00-2-2v-1m2 0a2 2 0 012 2v1">
+                </path>
+              </svg>
+              Packs
+            </h3>
+            <ul class="space-y-2 pl-4 line-clamp-4 max-w-md mx-auto">
               <li>Stripe: Card declined, 5xx errors, webhook retry</li>
               <li>Twilio: SMS timeout, rate limit</li>
               <li>OpenAI: 429s, slow streaming, auth expiry</li>
@@ -68,85 +72,112 @@
             </ul>
           </div>
         </div>
-        
+
         <div class="card pt-6">
-          <h3 class="font-medium mb-3">Or start blank</h3>
-          <p class="text-muted mb-4">Create a custom scenario from scratch</p>
-          <button id="start-blank" class="btn btn-primary w-full justify-center py-2.5 text-sm font-medium">
-            Start blank scenario
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Live traffic screen -->
-    <div id="traffic-screen" class="hidden min-h-screen flex flex-col fade-in-up" style="animation-delay: 0.1s;">
-      <nav class="bg-white shadow-sm dark:bg-gray-800 border-b px-4 py-3">
-        <div class="container flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <span class="text-xl font-semibold">Live Traffic</span>
-            <button id="back-home" class="btn-nav btn-nav-secondary">Home</button>
-          </div>
-          <div class="flex items-center gap-2">
-            <button id="pause-btn" class="btn btn-secondary py-1.5 text-sm font-medium">
-              Pause
+          <div class="card-header">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2">
+              </svg>
+            </div>
+            <h2 class="font-semibold">Or start blank</h2>
+            <p class="text-sm text-muted mb-4">Create a custom scenario from scratch</p>
+            <button id="start-blank" class="btn btn-primary w-full justify-center py-2.5 text-sm font-medium">
+              Start blank scenario
             </button>
-            <span id="filter-status" class="text-muted">All</span>
-            <input id="filter-q" type="text" placeholder="Search..." class="input rounded border py-1 px-3 text-sm flex-1">
           </div>
         </div>
-      </nav>
-      <div class="flex-1 overflow-y-auto px-4 pb-6">
-        <div class="space-y-4">
-          <p class="text-center text-muted py-8">Connecting to live events...</p>
-        </div>
-      </div>
-    </div>
+      </section>
 
-    <!-- Chaos controls screen -->
-    <div id="chaos-screen" class="hidden min-h-screen flex flex-col fade-in-up" style="animation-delay: 0.2s;">
-      <nav class="bg-white shadow-sm dark:bg-gray-800 border-b px-4 py-3">
-        <div class="container flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <span class="text-xl font-semibold">Chaos Controls</span>
-            <button id="back-to-traffic" class="btn-nav btn-nav-secondary">Traffic</button>
+      <!-- Live traffic screen -->
+      <section id="traffic-screen" class="hidden pt-6 fade-in-up" style="animation-delay: 0.1s;">
+        <div class="mb-6">
+          <h2 class="section-header mb-0">
+            <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2">
+              </path>
+            </svg>
+            Live Traffic
+          </h2>
+        </div>
+        <div class="grid-2 mb-6">
+          <div>
+            <div class="pill pill-primary">Live</div>
+            <p class="text-sm text-muted mt-1">Real-time request tracking</p>
           </div>
           <div>
-            <button id="kill-switch" class="btn btn-error py-2 font-medium">
-              Kill Switch: ON
-            </button>
+            <div class="pill pill-info">1,234</div>
+            <p class="text-sm text-muted mt-1">Total requests</p>
           </div>
         </div>
-      </nav>
-      <div class="p-6">
+        <div class="card">
+          <div class="card-header">
+            <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2">
+              </path>
+            </svg>
+            Recent events
+          </div>
+          <div class="p-4 text-sm text-muted">
+            <p class="text-center text-muted py-8">Connecting to live events...</p>
+          </div>
+        </div>
+        <div class="mt-6">
+          <button id="back-home" class="btn btn-secondary">Home</button>
+          <button id="pause-btn" class="btn btn-secondary ml-3">Pause</button>
+        </div>
+      </section>
+
+      <!-- Chaos controls screen -->
+      <section id="chaos-screen" class="hidden pt-6 fade-in-up" style="animation-delay: 0.2s;">
+        <div class="mb-6">
+          <h2 class="section-header mb-0">
+            <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2">
+              </path>
+            </svg>
+            Chaos Controls
+          </h2>
+        </div>
+
         <div class="grid-2 mb-8">
           <!-- Latency control -->
           <div class="card">
-            <h3 class="font-medium mb-2">Latency</h3>
-            <p class="text-muted text-sm mb-4">Adds a random delay to simulate a slow network</p>
+            <div class="card-header">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2">
+                </path>
+              </svg>
+              <span>Latency</span>
+            </div>
+            <p class="text-sm text-muted mb-4">Adds a random delay to simulate a slow network</p>
             <div>
-              <label class="block text-sm mb-1">Delay (ms)</label>
-              <input type="range" id="latency-slider" min="0" max="5000" value="0" class="w-full accent-primary">
+              <label class="block text-xs text-muted mb-2">Delay (ms)</label>
+              <input type="range" id="latency-slider" min="0" max="5000" value="0" class="w-full">
               <div class="flex justify-between text-xs mt-2">
                 <span>0ms</span>
                 <span>5s</span>
               </div>
             </div>
           </div>
-          
+
           <!-- Error control -->
           <div class="card">
-            <h3 class="font-medium mb-2">Error</h3>
-            <p class="text-muted text-sm mb-4">Returns an HTTP error some of the time</p>
+            <div class="card-header">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 01-4 4v7h4V7zm0 0a4 4 0 01-4-4V3h4v7zm0 0a4 4 0 01-4 4v7H4a4 4 0 01-4-4v-7h4z">
+                </path>
+              </svg>
+              <span>Error</span>
+            </div>
+            <p class="text-sm text-muted mb-4">Returns an HTTP error some of the time</p>
+            <select id="error-status" class="input w-full mb-3">
+              <option value="503">503</option>
+              <option value="500">500</option>
+              <option value="429">429</option>
+            </select>
             <div>
-              <label class="block text-sm mb-1">Status code</label>
-              <select id="error-status" class="rounded border py-1 px-2 w-full mb-3">
-                <option value="503">503</option>
-                <option value="500">500</option>
-                <option value="429">429</option>
-              </select>
-              <label class="block text-sm mb-1">Probability</label>
-              <input type="range" id="probability-slider" min="0" max="100" value="30" class="w-full accent-primary">
+              <label class="block text-xs text-muted mb-2">Probability</label>
+              <input type="range" id="probability-slider" min="0" max="100" value="30" class="w-full">
               <div class="flex justify-between text-xs mt-2">
                 <span>0%</span>
                 <span>100%</span>
@@ -154,91 +185,131 @@
             </div>
           </div>
         </div>
-        
+
         <div class="grid-2 mb-8">
           <!-- Rate limit control -->
           <div class="card">
-            <h3 class="font-medium mb-2">Rate limit</h3>
-            <p class="text-muted text-sm mb-4">Limits requests per time window</p>
+            <div class="card-header">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2">
+                </path>
+              </svg>
+              <span>Rate limit</span>
+            </div>
+            <p class="text-sm text-muted mb-4">Limits requests per time window</p>
             <div>
-              <label class="block text-sm mb-1">Requests per window</label>
-              <input type="number" id="rate-limit" min="1" value="10" class="rounded border py-2 px-3 text-sm">
+              <label class="block text-xs text-muted mb-2">Requests per window</label>
+              <input type="number" id="rate-limit" min="1" value="10" class="input w-full">
             </div>
             <div>
-              <label class="block text-sm mb-1">Window (seconds)</label>
-              <input type="number" id="rate-window" min="1" value="60" class="rounded border py-2 px-3 text-sm">
+              <label class="block text-xs text-muted mb-2">Window (seconds)</label>
+              <input type="number" id="rate-window" min="1" value="60" class="input w-full">
             </div>
           </div>
-          
+
           <!-- Timeout control -->
           <div class="card">
-            <h3 class="font-medium mb-2">Timeout</h3>
-            <p class="text-muted text-sm mb-4">Never responds until client gives up</p>
+            <div class="card-header">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2">
+                </path>
+              </svg>
+              <span>Timeout</span>
+            </div>
+            <p class="text-sm text-muted mb-4">Never responds until client gives up</p>
             <div>
-              <label class="block text-sm mb-1">Probability</label>
-              <input type="range" id="timeout-slider" min="0" max="100" value="0" class="w-full accent-primary">
+              <label class="block text-xs text-muted mb-2">Probability</label>
+              <input type="range" id="timeout-slider" min="0" max="100" value="0" class="w-full">
             </div>
           </div>
         </div>
-        
-        <div>
-          <button id="reset-btn" class="btn btn-secondary w-full py-2.5 text-sm font-medium mt-4">
-            Reset to defaults
-          </button>
-          <p class="text-center text-muted mt-3">Seed: <span id="seed-display">0</span></p>
-        </div>
-      </div>
-    </div>
 
-    <!-- Report screen -->
-    <div id="report-screen" class="hidden min-h-screen flex flex-col fade-in-up" style="animation-delay: 0.3s;">
-      <nav class="bg-white shadow-sm dark:bg-gray-800 border-b px-4 py-3">
-        <div class="container flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <span class="text-xl font-semibold">Resilience Report</span>
-            <button id="back-to-traffic2" class="btn-nav btn-nav-secondary">Traffic</button>
+        <div>
+          <button id="reset-btn" class="btn btn-secondary w-full py-2.5 mt-4">Reset to defaults</button>
+          <p class="text-center text-sm text-muted mt-2">Seed: <span id="seed-display">0</span></p>
+        </div>
+      </section>
+
+      <!-- Report screen -->
+      <section id="report-screen" class="hidden pt-6 fade-in-up" style="animation-delay: 0.3s;">
+        <div class="mb-6">
+          <h2 class="section-header mb-0">
+            <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2">
+              </path>
+            </svg>
+            Resilience Report
+          </h2>
+        </div>
+        <div class="grid-2 mb-6">
+          <div>
+            <div class="pill pill-primary">Text</div>
+            <p class="text-sm text-muted mt-1">Human readable</p>
           </div>
-          <div class="flex items-center gap-2">
-            <select id="report-format" class="rounded border py-1.5 px-3 text-sm">
+          <div>
+            <div class="pill pill-success">JSON</div>
+            <p class="text-sm text-muted mt-1">Machine readable</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2">
+              </path>
+            </svg>
+            Export report
+          </div>
+          <div class="p-4 text-sm text-muted">
+            <p class="text-center text-muted py-8">Select a format to generate report</p>
+          </div>
+          <div class="mt-4">
+            <select id="report-format" class="input w-full mb-3">
               <option value="text">Text</option>
               <option value="json">JSON</option>
               <option value="html">HTML</option>
             </select>
-            <button id="export-btn" class="btn btn-primary py-1.5 text-sm font-medium">
+            <button id="export-btn" class="btn btn-primary w-full py-2.5 text-sm font-medium">
               Export
             </button>
           </div>
         </div>
-      </nav>
-      <div class="p-6">
-        <div id="report-content" class="text-center text-muted py-8">Select a format to generate report</div>
-      </div>
-    </div>
+      </section>
 
-    <!-- Recordings screen -->
-    <div id="recordings-screen" class="hidden min-h-screen flex flex-col fade-in-up" style="animation-delay: 0.4s;">
-      <nav class="bg-white shadow-sm dark:bg-gray-800 border-b px-4 py-3">
-        <div class="container flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <span class="text-xl font-semibold">Recordings</span>
-            <button id="back-to-traffic3" class="btn-nav btn-nav-secondary">Traffic</button>
+      <!-- Recordings screen -->
+      <section id="recordings-screen" class="hidden pt-6 fade-in-up" style="animation-delay: 0.4s;">
+        <div class="mb-6">
+          <h2 class="section-header mb-0">
+            <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2">
+              </path>
+            </svg>
+            Recorded Interactions
+          </h2>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12a2 2 0 012 2v1a22 22 0 01-2 2h-1a2 2 0 01-2-2v-1M8 7a2 2 0 00-2-2v-1M8 7a2 2 0 002-2h1m2 0a2 2 0 012 2v1M8 7a2 2 0 01-2-2H8">
+              </path>
+            </svg>
+          </div>
+          <div class="p-4 text-sm text-muted text-center">
+            <p>No recordings yet</p>
+            <p class="mt-1">Start testing to record interactions</p>
+          </div>
+          <div class="mt-4">
+            <button id="promote-btn" class="btn btn-primary w-full py-2.5 text-sm font-medium">
+              Promote to mock route
+            </button>
+          </button>
           </div>
         </div>
-      </nav>
-      <div class="p-6">
-        <div class="border rounded-lg p-4 mb-6">
-          <h3 class="font-medium">No recordings yet</h3>
-          <p class="text-muted">Start testing to record interactions</p>
-          <button id="promote-btn" class="btn btn-primary mt-3 py-2 text-sm font-medium">
-            Promote to mock route
-          </button>
-        </div>
-        <div id="recordings-list">
+        <div id="recordings-list" class="mt-4 p-4 text-sm text-muted text-center">
           <!-- Recordings will be populated here -->
         </div>
-      </div>
-    </div>
-  </main>
+      </section>
+    </main>
+  </div>
 
   <script type="module" src="/dashboard.js"></script>
 </body>
